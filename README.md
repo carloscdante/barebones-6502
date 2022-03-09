@@ -14,7 +14,7 @@ A learning experiment to see if I'm dumb enough to not understand how a CPU work
 - 0000 to 00FF is called "zero-page" and does something interesting (special addressing modes)
 - 0100 to 01FF is the stack (256 bytes of stack)
 - The last 6 bytes are also reserved and they HAVE to be programmed with the non-maskable interrupt handler at FFFA/B, the power on reset location at FFFC/D and the BRK/interrupt request handler at FFFE/F.
-- We have to emulate the registers.
+- We have to emulate the registers (of course, it's an emulator you dumb fuck).
 
 ## The Program Counter
 
