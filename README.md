@@ -1,6 +1,6 @@
 # Barebones 6502 in Python
 
-![6502](https://hackerspace.ie/wp-content/uploads/2020/06/s-l1600-2.jpg)
+![6502](https://i.ebayimg.com/images/g/f7gAAOSwZUle5j40/s-l300.jpg)
 
 A learning experiment to see if I'm dumb enough to not understand how a CPU works.
 
