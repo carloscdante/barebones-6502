@@ -27,7 +27,9 @@ N = 1
 
 opcodes = {
     0xA9: 'INS_LDA_IM',
-    0xA5: 'INS_LDA_ZP'
+    0xA5: 'INS_LDA_ZP',
+    0xB5: 'INS_LDA_ZPX',
+    0x20: 'INS_JSR'
 }
 
 # instruction fetch
@@ -42,6 +44,17 @@ def fetch(cycle, memory):
     global PC
     global data
     return data[PC]
+
+def fetch_word(cycle, memory):
+    global PC
+    global data
+    unit = data[PC]
+    unit |= (data[PC] << 8)
+    return data[PC]
+
+def write_word(value, addr):
+    data[addr] = value & 0xFF
+    data[addr + 1] = (value >> 8)
 
 def init_memory(memory):
     for i in range(memory):
@@ -63,6 +76,19 @@ def step(cycle, memory):
             zpa = fetch(cycle, memory)
             A = read(cycle, zpa)
             PC -= 1
+        if(opcode == 'INS_LDA_ZPX'):
+            zpa = fetch(cycle, memory)
+            zpa += X
+            A = read(cycle, zpa)
+            PC -= 1
+        if(opcode == 'INS_JSR'):
+            subaddr = fetch_word(cycle, memory)
+            cycle -= 2
+            data[SP] = PC - 1
+            write_word(PC - 1, SP)
+            PC = subaddr
+            SP += 1
+            cycle -= 1
 
         if(opcode == ''):
             print('No instruction provided')
@@ -88,10 +114,12 @@ def reset(memory):
 def run():
     global A
     reset(memory)
-    data[0xFFFC] = 0xA5
+    data[0xFFFC] = 0x20
     data[0xFFFD] = 0x42
-    data[0x0042] = 0x84
-    step(3, memory)
+    data[0xFFFE] = 0x42
+    data[0x0042] = 0xA9
+    data[0x0043] = 0x84
+    step(6, memory)
     print(A)
     return 0
 
