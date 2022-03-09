@@ -1,5 +1,7 @@
 # Barebones 6502 in Python
 
+![6502](https://hackerspace.ie/wp-content/uploads/2020/06/s-l1600-2.jpg)
+
 A learning experiment to see if I'm dumb enough to not understand how a CPU works.
 
 [6502 reference](https://cx16.dk/6502/architecture.html)
