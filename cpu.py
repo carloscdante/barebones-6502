@@ -25,7 +25,14 @@ B = 1
 V = 1
 N = 1
 
+opcodes = {
+    0xA9: 'INS_LDA_IM',
+}
+
 # instruction fetch
+
+def map_opcode(op):
+    return opcodes.get(op)
 
 def read(addr):
     return data[addr]
@@ -33,7 +40,6 @@ def read(addr):
 def fetch(cycle, memory):
     global PC
     global data
-    PC += 1
     return data[PC]
 
 def init_memory(memory):
@@ -41,9 +47,20 @@ def init_memory(memory):
         data[i] = 0
 
 def step(cycle, memory):
+    global PC, SP, C, Z, I, D, B, V, N, A, X, Y
     while cycle > 0:
-        cycle -= 1
         next = fetch(cycle, memory)
+        cycle -= 1
+        PC += 1
+        opcode = map_opcode(next)
+        if(opcode == 'INS_LDA_IM'):
+            val = fetch(cycle, memory)
+            A = val
+            if(A == 0): Z = 1
+            if(A & 0b10000000) > 0: N = 1
+        if(opcode == ''):
+            print('No instruction provided')
+
 
 def reset(memory):
     # reset process
@@ -63,8 +80,12 @@ def reset(memory):
     init_memory(memory)
 
 def run():
+    global A
     reset(memory)
+    data[0xFFFC] = 0xA9
+    data[0xFFFD] = 0x42
     step(2, memory)
+    print(A)
     return 0
 
 run()
