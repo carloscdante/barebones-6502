@@ -27,6 +27,7 @@ N = 1
 
 opcodes = {
     0xA9: 'INS_LDA_IM',
+    0xA5: 'INS_LDA_ZP'
 }
 
 # instruction fetch
@@ -34,7 +35,7 @@ opcodes = {
 def map_opcode(op):
     return opcodes.get(op)
 
-def read(addr):
+def read(cycle, addr):
     return data[addr]
 
 def fetch(cycle, memory):
@@ -58,6 +59,11 @@ def step(cycle, memory):
             A = val
             if(A == 0): Z = 1
             if(A & 0b10000000) > 0: N = 1
+        if(opcode == 'INS_LDA_ZP'):
+            zpa = fetch(cycle, memory)
+            A = read(cycle, zpa)
+            PC -= 1
+
         if(opcode == ''):
             print('No instruction provided')
 
@@ -82,9 +88,10 @@ def reset(memory):
 def run():
     global A
     reset(memory)
-    data[0xFFFC] = 0xA9
+    data[0xFFFC] = 0xA5
     data[0xFFFD] = 0x42
-    step(2, memory)
+    data[0x0042] = 0x84
+    step(3, memory)
     print(A)
     return 0
 
