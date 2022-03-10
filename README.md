@@ -4,7 +4,7 @@
 
 A learning experiment to see if I'm dumb enough to not understand how a CPU works.
 
-__This is a dumb Python port of a barebones 6502 made by dave poo in a ![video tutorial.](https://www.youtube.com/watch?v=qJgsuQoy9bc)__
+__This is a dumb Python port of a barebones 6502 made by dave poo in a [video tutorial.](https://www.youtube.com/watch?v=qJgsuQoy9bc)__
 
 [6502 reference](https://cx16.dk/6502/architecture.html)
 
